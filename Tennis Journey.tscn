@@ -1,0 +1,87 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Player.gd" type="Script" id=1]
+[ext_resource path="res://Ball.gd" type="Script" id=2]
+[ext_resource path="res://Court.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Cameras.tscn" type="PackedScene" id=5]
+
+[sub_resource type="BoxShape" id=4]
+extents = Vector3( 1.10803, 2.98461, 1.10273 )
+
+[sub_resource type="CapsuleMesh" id=5]
+
+[sub_resource type="BoxShape" id=6]
+extents = Vector3( 45.5099, 19.3194, 3.95714 )
+
+[sub_resource type="BoxShape" id=7]
+extents = Vector3( 1.10803, 2.98461, 1.10273 )
+
+[sub_resource type="CapsuleMesh" id=8]
+
+[sub_resource type="BoxShape" id=9]
+extents = Vector3( 35.4419, 14.5048, 3.95714 )
+
+[sub_resource type="PhysicsMaterial" id=1]
+bounce = 1.0
+
+[sub_resource type="SphereShape" id=2]
+
+[sub_resource type="SphereMesh" id=3]
+
+[node name="Tennis Journey" type="Spatial"]
+
+[node name="Player" type="KinematicBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.422045, 4.17109, 15.9582 )
+script = ExtResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Player"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00852494, -0.00650501, 0 )
+shape = SubResource( 4 )
+
+[node name="CSGMesh" type="CSGMesh" parent="Player"]
+transform = Transform( 1, 0, 0, 0, -3.16229e-07, -1.941, 0, 1, -1.62921e-07, 0, 0, 0 )
+mesh = SubResource( 5 )
+
+[node name="HitZone" type="Area" parent="Player"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Player/HitZone"]
+shape = SubResource( 6 )
+
+[node name="AI" type="KinematicBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.451926, 4.17109, -26.6063 )
+
+[node name="CollisionShape" type="CollisionShape" parent="AI"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00852494, -0.00650501, 0 )
+shape = SubResource( 7 )
+
+[node name="CSGMesh" type="CSGMesh" parent="AI"]
+transform = Transform( 1, 0, 0, 0, -3.16229e-07, -1.941, 0, 1, -1.62921e-07, 0, 0, 0 )
+mesh = SubResource( 8 )
+
+[node name="HitZone" type="Area" parent="AI"]
+
+[node name="CollisionShape" type="CollisionShape" parent="AI/HitZone"]
+shape = SubResource( 9 )
+
+[node name="Court" parent="." instance=ExtResource( 3 )]
+
+[node name="Ball" type="RigidBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.86178, 6.54253, -14.7496 )
+mass = 0.102041
+physics_material_override = SubResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="Ball"]
+shape = SubResource( 2 )
+
+[node name="CSGMesh" type="CSGMesh" parent="Ball"]
+mesh = SubResource( 3 )
+
+[node name="Cameras" parent="." instance=ExtResource( 5 )]
+[connection signal="body_entered" from="Player/HitZone" to="Ball" method="_on_HitZone_body_entered"]
+[connection signal="body_exited" from="Player/HitZone" to="Ball" method="_on_HitZone_body_exited"]
+[connection signal="body_entered" from="AI/HitZone" to="Ball" method="_on_HitZone_body_entered"]
+[connection signal="body_exited" from="AI/HitZone" to="Ball" method="_on_HitZone_body_exited"]

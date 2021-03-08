@@ -1,0 +1,10 @@
+[gd_scene format=2]
+
+[node name="Cameras" type="Spatial"]
+
+[node name="TVCamera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.945496, 0.325634, 0, -0.325634, 0.945496, -0.523129, 11.0843, 45.6897 )
+current = true
+
+[node name="TopDownCamera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, -0.280792, 56.9222, 0.480886 )

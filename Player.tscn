@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Player.gd" type="Script" id=1]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 1.10803, 2.98461, 1.10273 )
+
+[sub_resource type="CapsuleMesh" id=2]
+
+[sub_resource type="BoxShape" id=3]
+extents = Vector3( 33.8306, 6.38395, 3.95714 )
+
+[node name="Player" type="KinematicBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.422045, 4.17109, 15.9582 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00852494, -0.00650501, 0 )
+shape = SubResource( 1 )
+
+[node name="CSGMesh" type="CSGMesh" parent="."]
+transform = Transform( 1, 0, 0, 0, -3.16229e-07, -1.941, 0, 1, -1.62921e-07, 0, 0, 0 )
+mesh = SubResource( 2 )
+
+[node name="HitZone" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="HitZone"]
+shape = SubResource( 3 )

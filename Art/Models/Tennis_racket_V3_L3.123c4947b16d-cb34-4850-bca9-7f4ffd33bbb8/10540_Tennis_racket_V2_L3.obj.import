@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/10540_Tennis_racket_V2_L3.obj-178ccb87436bef79bf4f5464d6c1f44f.mesh"
+
+[deps]
+
+files=[ "res://.import/10540_Tennis_racket_V2_L3.obj-178ccb87436bef79bf4f5464d6c1f44f.mesh" ]
+
+source_file="res://Art/Models/Tennis_racket_V3_L3.123c4947b16d-cb34-4850-bca9-7f4ffd33bbb8/10540_Tennis_racket_V2_L3.obj"
+dest_files=[ "res://.import/10540_Tennis_racket_V2_L3.obj-178ccb87436bef79bf4f5464d6c1f44f.mesh", "res://.import/10540_Tennis_racket_V2_L3.obj-178ccb87436bef79bf4f5464d6c1f44f.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
