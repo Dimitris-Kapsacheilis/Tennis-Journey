@@ -1,87 +1,522 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
-[ext_resource path="res://Ball.gd" type="Script" id=2]
-[ext_resource path="res://Court.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Cameras.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Score.gd" type="Script" id=3]
+[ext_resource path="res://Bar.gd" type="Script" id=4]
+[ext_resource path="res://Art/UI/BarYellow.png" type="Texture" id=5]
+[ext_resource path="res://Art/UI/BarIndicator.png" type="Texture" id=6]
+[ext_resource path="res://Art/UI/BarGreen.png" type="Texture" id=7]
+[ext_resource path="res://Art/UI/BarRed.png" type="Texture" id=8]
+[ext_resource path="res://AI.gd" type="Script" id=9]
+[ext_resource path="res://BallK.gd" type="Script" id=10]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 1.10803, 2.98461, 1.10273 )
+
+[sub_resource type="CapsuleMesh" id=2]
+
+[sub_resource type="BoxShape" id=3]
+extents = Vector3( 3.57891, 2.37135, 2.45217 )
 
 [sub_resource type="BoxShape" id=4]
 extents = Vector3( 1.10803, 2.98461, 1.10273 )
 
 [sub_resource type="CapsuleMesh" id=5]
 
-[sub_resource type="BoxShape" id=6]
-extents = Vector3( 45.5099, 19.3194, 3.95714 )
+[sub_resource type="SpatialMaterial" id=6]
+albedo_color = Color( 0.054902, 0, 1, 1 )
 
 [sub_resource type="BoxShape" id=7]
-extents = Vector3( 1.10803, 2.98461, 1.10273 )
+extents = Vector3( 2.97416, 2.722, 2.27746 )
 
-[sub_resource type="CapsuleMesh" id=8]
-
-[sub_resource type="BoxShape" id=9]
-extents = Vector3( 35.4419, 14.5048, 3.95714 )
-
-[sub_resource type="PhysicsMaterial" id=1]
+[sub_resource type="PhysicsMaterial" id=8]
+friction = 0.1
 bounce = 1.0
 
-[sub_resource type="SphereShape" id=2]
+[sub_resource type="BoxShape" id=9]
+margin = 0.1
 
-[sub_resource type="SphereMesh" id=3]
+[sub_resource type="CubeMesh" id=10]
+
+[sub_resource type="SpatialMaterial" id=11]
+albedo_color = Color( 0.141176, 1, 0.454902, 1 )
+
+[sub_resource type="BoxShape" id=12]
+extents = Vector3( 1, 1.4, 1 )
+
+[sub_resource type="BoxShape" id=13]
+extents = Vector3( 0.176682, 1.7, 0.343433 )
+
+[sub_resource type="SpatialMaterial" id=14]
+albedo_color = Color( 1, 0, 0, 1 )
+
+[sub_resource type="BoxShape" id=15]
+extents = Vector3( 1, 1.1, 1 )
+
+[sub_resource type="PhysicsMaterial" id=16]
+friction = 0.5
+bounce = 1.0
+
+[sub_resource type="SphereShape" id=17]
+
+[sub_resource type="SphereMesh" id=18]
+
+[sub_resource type="SpatialMaterial" id=19]
+albedo_color = Color( 0.529412, 0.901961, 0.0352941, 1 )
+
+[sub_resource type="PhysicsMaterial" id=20]
+absorbent = true
+
+[sub_resource type="CubeMesh" id=21]
+
+[sub_resource type="BoxShape" id=22]
+
+[sub_resource type="BoxShape" id=23]
+extents = Vector3( 1, 1.001, 1 )
 
 [node name="Tennis Journey" type="Spatial"]
 
 [node name="Player" type="KinematicBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.422045, 4.17109, 15.9582 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.171, 37 )
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="CollisionShape" type="CollisionShape" parent="Player"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00852494, -0.00650501, 0 )
-shape = SubResource( 4 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00852495, -0.00650501, 0 )
+shape = SubResource( 1 )
 
 [node name="CSGMesh" type="CSGMesh" parent="Player"]
 transform = Transform( 1, 0, 0, 0, -3.16229e-07, -1.941, 0, 1, -1.62921e-07, 0, 0, 0 )
-mesh = SubResource( 5 )
+mesh = SubResource( 2 )
 
 [node name="HitZone" type="Area" parent="Player"]
 
 [node name="CollisionShape" type="CollisionShape" parent="Player/HitZone"]
-shape = SubResource( 6 )
+shape = SubResource( 3 )
+
+[node name="Spatial" type="Spatial" parent="Player"]
+
+[node name="Sprite3D" type="Sprite3D" parent="Player"]
+billboard = 1
+
+[node name="Viewport" type="Viewport" parent="Player/Sprite3D"]
+size = Vector2( 10, 120 )
+transparent_bg = true
+usage = 0
+render_target_v_flip = true
 
 [node name="AI" type="KinematicBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.451926, 4.17109, -26.6063 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.452, 4.171, -37 )
+script = ExtResource( 9 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="CollisionShape" type="CollisionShape" parent="AI"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00852494, -0.00650501, 0 )
-shape = SubResource( 7 )
+shape = SubResource( 4 )
 
 [node name="CSGMesh" type="CSGMesh" parent="AI"]
 transform = Transform( 1, 0, 0, 0, -3.16229e-07, -1.941, 0, 1, -1.62921e-07, 0, 0, 0 )
-mesh = SubResource( 8 )
+mesh = SubResource( 5 )
+material = SubResource( 6 )
 
 [node name="HitZone" type="Area" parent="AI"]
 
 [node name="CollisionShape" type="CollisionShape" parent="AI/HitZone"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0125732, 0.0502491, -0.0143585 )
+shape = SubResource( 7 )
+
+[node name="Court" type="StaticBody" parent="."]
+transform = Transform( -5.5393e-06, 0, 16, 0, 1, 0, -34, 0, -2.60673e-06, 0, 0, 0 )
+physics_material_override = SubResource( 8 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="Court"]
 shape = SubResource( 9 )
 
-[node name="Court" parent="." instance=ExtResource( 3 )]
+[node name="CSGMesh" type="CSGMesh" parent="Court"]
+mesh = SubResource( 10 )
+material = SubResource( 11 )
+
+[node name="Court" type="Area" parent="Court"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Court/Court"]
+shape = SubResource( 12 )
+
+[node name="HitPoints" type="Spatial" parent="Court"]
+
+[node name="L" type="Area" parent="Court/HitPoints"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.595869, 0, -0.757598 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="Court/HitPoints/L"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0869722, 0, 0.131868 )
+shape = SubResource( 13 )
+
+[node name="R" type="Area" parent="Court/HitPoints"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.595869, 0, 0.49957 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="Court/HitPoints/R"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0869722, 0, 0.131868 )
+shape = SubResource( 13 )
+
+[node name="C" type="Area" parent="Court/HitPoints"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.595869, 0, -0.12543 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="Court/HitPoints/C"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0869722, 0, 0.131868 )
+shape = SubResource( 13 )
+
+[node name="PlayerLeft" type="Area" parent="Court/HitPoints"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.44759, 0, -0.757598 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="Court/HitPoints/PlayerLeft"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0869722, 0, 0.131868 )
+shape = SubResource( 13 )
+
+[node name="PlayerRight" type="Area" parent="Court/HitPoints"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.44759, 0, 0.49957 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="Court/HitPoints/PlayerRight"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0869722, 0, 0.131868 )
+shape = SubResource( 13 )
+
+[node name="PlayerCenter" type="Area" parent="Court/HitPoints"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.44759, 0, -0.12543 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="Court/HitPoints/PlayerCenter"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0869722, 0, 0.131868 )
+shape = SubResource( 13 )
+
+[node name="LL" type="Area" parent="Court/HitPoints"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.27234, 0, -0.757598 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="Court/HitPoints/LL"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0869722, 0, 0.131868 )
+shape = SubResource( 13 )
+
+[node name="LR" type="Area" parent="Court/HitPoints"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.27234, 0, 0.49957 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="Court/HitPoints/LR"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0869722, 0, 0.131868 )
+shape = SubResource( 13 )
+
+[node name="LC" type="Area" parent="Court/HitPoints"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.27234, 0, -0.12543 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="Court/HitPoints/LC"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0869722, 0, 0.131868 )
+shape = SubResource( 13 )
+
+[node name="UL" type="Area" parent="Court/HitPoints"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.919398, 0, -0.757598 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="Court/HitPoints/UL"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0869722, 0, 0.131868 )
+shape = SubResource( 13 )
+
+[node name="UR" type="Area" parent="Court/HitPoints"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.919398, 0, 0.49957 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="Court/HitPoints/UR"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0869722, 0, 0.131868 )
+shape = SubResource( 13 )
+
+[node name="UC" type="Area" parent="Court/HitPoints"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.919398, 0, -0.12543 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="Court/HitPoints/UC"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0869722, 0, 0.131868 )
+shape = SubResource( 13 )
+
+[node name="OutCourt" type="StaticBody" parent="."]
+transform = Transform( -8.14603e-06, 0, 50, 0, 0.99, 0, -50, 0, -8.14603e-06, 0, 0, 0 )
+physics_material_override = SubResource( 8 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="OutCourt"]
+shape = SubResource( 9 )
+
+[node name="CSGMesh" type="CSGMesh" parent="OutCourt"]
+mesh = SubResource( 10 )
+material = SubResource( 14 )
+
+[node name="Out" type="Area" parent="OutCourt"]
+
+[node name="CollisionShape" type="CollisionShape" parent="OutCourt/Out"]
+shape = SubResource( 15 )
+
+[node name="OutCourt2" type="StaticBody" parent="."]
+transform = Transform( 1.32716e-12, 1.61291e-07, 50, 50, -1.61291e-07, 0, 8.14603e-06, 0.99, -8.14603e-06, 0, 0, -49.9 )
+physics_material_override = SubResource( 8 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="OutCourt2"]
+shape = SubResource( 9 )
+
+[node name="CSGMesh" type="CSGMesh" parent="OutCourt2"]
+mesh = SubResource( 10 )
+material = SubResource( 14 )
+
+[node name="Out" type="Area" parent="OutCourt2"]
+
+[node name="CollisionShape" type="CollisionShape" parent="OutCourt2/Out"]
+shape = SubResource( 15 )
+
+[node name="OutCourt3" type="StaticBody" parent="."]
+transform = Transform( 1.32716e-12, 1.61291e-07, 50, 50, -1.61291e-07, 0, 8.14603e-06, 0.99, -8.14603e-06, 0, 0, 51.588 )
+physics_material_override = SubResource( 8 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="OutCourt3"]
+shape = SubResource( 9 )
+
+[node name="CSGMesh" type="CSGMesh" parent="OutCourt3"]
+mesh = SubResource( 10 )
+material = SubResource( 14 )
+
+[node name="Out" type="Area" parent="OutCourt3"]
+
+[node name="CollisionShape" type="CollisionShape" parent="OutCourt3/Out"]
+shape = SubResource( 15 )
 
 [node name="Ball" type="RigidBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.86178, 6.54253, -14.7496 )
-mass = 0.102041
-physics_material_override = SubResource( 1 )
-script = ExtResource( 2 )
+pause_mode = 1
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -35.0442, 6.54253, 9.54374 )
+mode = 1
+mass = 1.02041
+physics_material_override = SubResource( 16 )
+continuous_cd = true
+contacts_reported = 3
+contact_monitor = true
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="CollisionShape" type="CollisionShape" parent="Ball"]
-shape = SubResource( 2 )
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
+shape = SubResource( 17 )
 
 [node name="CSGMesh" type="CSGMesh" parent="Ball"]
-mesh = SubResource( 3 )
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
+mesh = SubResource( 18 )
+material = SubResource( 19 )
 
-[node name="Cameras" parent="." instance=ExtResource( 5 )]
-[connection signal="body_entered" from="Player/HitZone" to="Ball" method="_on_HitZone_body_entered"]
-[connection signal="body_exited" from="Player/HitZone" to="Ball" method="_on_HitZone_body_exited"]
-[connection signal="body_entered" from="AI/HitZone" to="Ball" method="_on_HitZone_body_entered"]
-[connection signal="body_exited" from="AI/HitZone" to="Ball" method="_on_HitZone_body_exited"]
+[node name="BallK" type="KinematicBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.797, 30 )
+script = ExtResource( 10 )
+
+[node name="CollisionShape" type="CollisionShape" parent="BallK"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
+shape = SubResource( 17 )
+
+[node name="CSGMesh" type="CSGMesh" parent="BallK"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
+mesh = SubResource( 18 )
+material = SubResource( 19 )
+
+[node name="Cameras" type="Spatial" parent="."]
+
+[node name="TVCamera" type="Camera" parent="Cameras"]
+transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, -0.523129, 30.594, 42.9179 )
+current = true
+far = 150.0
+
+[node name="TopDownCamera" type="Camera" parent="Cameras"]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, -0.280792, 76.8989, 0.480886 )
+far = 150.0
+
+[node name="PowerBar" type="CanvasLayer" parent="."]
+pause_mode = 2
+follow_viewport_enable = true
+
+[node name="Bar" type="Control" parent="PowerBar"]
+visible = false
+anchor_right = 0.055
+anchor_bottom = 0.233
+margin_right = -26.32
+margin_bottom = -19.8
+grow_vertical = 0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Green" type="TextureRect" parent="PowerBar/Bar"]
+anchor_right = 0.02
+anchor_bottom = 0.033
+margin_top = 30.0
+margin_right = 9.4
+margin_bottom = 36.04
+rect_scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Yellow" type="TextureRect" parent="PowerBar/Bar"]
+anchor_right = 0.02
+anchor_bottom = 0.033
+margin_top = 60.0
+margin_right = 9.4
+margin_bottom = 66.04
+rect_scale = Vector2( 3, 3 )
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Red" type="TextureRect" parent="PowerBar/Bar"]
+anchor_right = 0.02
+anchor_bottom = 0.033
+margin_top = 90.0
+margin_right = 9.4
+margin_bottom = 96.04
+rect_scale = Vector2( 3, 3 )
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Red2" type="TextureRect" parent="PowerBar/Bar"]
+anchor_right = 0.02
+anchor_bottom = 0.033
+margin_right = 9.4
+margin_bottom = 6.04
+rect_scale = Vector2( 3, 3 )
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Indicator" type="TextureRect" parent="PowerBar/Bar"]
+anchor_left = 0.026
+anchor_top = 0.033
+anchor_right = 0.055
+anchor_bottom = 0.233
+margin_left = -0.78
+margin_top = 115.04
+margin_right = 8.35
+margin_bottom = 92.04
+grow_horizontal = 2
+grow_vertical = 2
+rect_scale = Vector2( 3, 1 )
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BarTimer" type="Timer" parent="PowerBar/Bar"]
+wait_time = 0.15
+one_shot = true
+
+[node name="Score" type="CanvasLayer" parent="."]
+follow_viewport_enable = true
+script = ExtResource( 3 )
+
+[node name="Player" type="Label" parent="Score"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -127.0
+margin_right = 251.0
+margin_bottom = -84.0
+text = "Player : 0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AI" type="Label" parent="Score"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -150.387
+margin_right = 248.0
+margin_bottom = -107.387
+text = "AI : 0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EndPoint" type="Timer" parent="Score"]
+wait_time = 0.3
+one_shot = true
+
+[node name="Net" type="StaticBody" parent="."]
+transform = Transform( 20, 0, 0, 0, 2, 0, 0, 0, 1, 0, 1, 0 )
+physics_material_override = SubResource( 20 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CSGMesh" type="CSGMesh" parent="Net"]
+mesh = SubResource( 21 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Net"]
+shape = SubResource( 22 )
+
+[node name="Net" type="Area" parent="Net"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Net/Net"]
+shape = SubResource( 23 )
+[connection signal="body_entered" from="Player/HitZone" to="BallK" method="_on_HitZone_body_entered"]
+[connection signal="body_exited" from="Player/HitZone" to="BallK" method="_on_HitZone_body_exited"]
+[connection signal="body_entered" from="AI/HitZone" to="BallK" method="_on_HitZone_body_entered"]
+[connection signal="body_exited" from="AI/HitZone" to="BallK" method="_on_HitZone_body_exited"]
+[connection signal="body_entered" from="Court/Court" to="BallK" method="_on_Court_body_entered"]
+[connection signal="body_entered" from="OutCourt/Out" to="BallK" method="_on_Out_body_entered"]
+[connection signal="body_entered" from="OutCourt2/Out" to="BallK" method="_on_Out_body_entered"]
+[connection signal="body_entered" from="OutCourt3/Out" to="BallK" method="_on_Out_body_entered"]
+[connection signal="timeout" from="PowerBar/Bar/BarTimer" to="PowerBar/Bar" method="_on_BarTimer_timeout"]
+[connection signal="timeout" from="Score/EndPoint" to="Score" method="_on_EndPoint_timeout"]
+[connection signal="body_entered" from="Net/Net" to="BallK" method="_on_Net_body_entered"]

@@ -4,12 +4,12 @@
 [ext_resource path="res://Cameras.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Bounce.gd" type="Script" id=3]
 
-[sub_resource type="PhysicsMaterial" id=3]
+[sub_resource type="PhysicsMaterial" id=1]
 bounce = 1.0
 
-[sub_resource type="SphereShape" id=1]
+[sub_resource type="SphereShape" id=2]
 
-[sub_resource type="SphereMesh" id=2]
+[sub_resource type="SphereMesh" id=3]
 
 [node name="Bounce" type="Spatial"]
 
@@ -20,14 +20,14 @@ bounce = 1.0
 [node name="RigidBody" type="RigidBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.43296, 5.98276, 15.7877 )
 mass = 0.102041
-physics_material_override = SubResource( 3 )
+physics_material_override = SubResource( 1 )
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="CollisionShape" type="CollisionShape" parent="RigidBody"]
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="CSGMesh" type="CSGMesh" parent="RigidBody"]
-mesh = SubResource( 2 )
+mesh = SubResource( 3 )

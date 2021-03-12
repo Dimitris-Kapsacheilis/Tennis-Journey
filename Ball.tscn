@@ -1,22 +1,35 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Ball.gd" type="Script" id=1]
 
-[sub_resource type="PhysicsMaterial" id=1]
+[sub_resource type="PhysicsMaterial" id=15]
+friction = 0.5
 bounce = 1.0
 
-[sub_resource type="SphereShape" id=2]
+[sub_resource type="SphereShape" id=16]
 
-[sub_resource type="SphereMesh" id=3]
+[sub_resource type="SphereMesh" id=17]
+
+[sub_resource type="SpatialMaterial" id=18]
+albedo_color = Color( 0.529412, 0.901961, 0.0352941, 1 )
 
 [node name="Ball" type="RigidBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.86178, 1.72529, -8.57843 )
-mass = 0.102041
-physics_material_override = SubResource( 1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.86178, 6.54253, 9.54374 )
+mass = 1.02041
+physics_material_override = SubResource( 15 )
+continuous_cd = true
+contacts_reported = 3
+contact_monitor = true
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-shape = SubResource( 2 )
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
+shape = SubResource( 16 )
 
 [node name="CSGMesh" type="CSGMesh" parent="."]
-mesh = SubResource( 3 )
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
+mesh = SubResource( 17 )
+material = SubResource( 18 )
