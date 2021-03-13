@@ -30,10 +30,10 @@ func _physics_process (delta):
 	var right = global_transform.basis.x
 	 
 
-	if ball.hitByPlayer:
+	if ball.hitByPlayer && !ball.serve :
 		direction.x = ball.translation.x - translation.x
 		direction.z = 0 #(ball.translation.z - translation.z - 18) / 120
-	elif !ball.hitByPlayer:
+	elif !ball.hitByPlayer && !ball.serve :
 		if  translation.x <= 0:
 			direction.x =  -translation.x
 		elif  translation.x > 0:

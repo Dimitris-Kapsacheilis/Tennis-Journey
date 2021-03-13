@@ -20,10 +20,10 @@ func _ready():
 	ball = get_node("/root/Tennis Journey/BallK") # Replace with function body.
 
 func _physics_process (delta):
-	if !ball.hitByPlayer: 
+	if !ball.hitByPlayer && !ball.serve: 
 		direction.x = ball.translation.x - translation.x
 		direction.z = 0 #(ball.translation.z - translation.z + 18) / 12
-	elif ball.hitByPlayer: # perimeno to ai
+	elif ball.hitByPlayer && !ball.serve: # perimeno to ai
 		if  translation.x <= 0:
 			direction.x =  -translation.x
 		elif  translation.x > 0:

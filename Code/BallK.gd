@@ -10,6 +10,7 @@ var speed  # 35
 var height  # 5
 var bounces
 var inside #true
+var serve = true
 
 #var direction = Vector3(0,0,0)
 #var distance = Vector3(0,0,0)
@@ -47,9 +48,8 @@ func _ready():
 	bounces = 0
 	inside = true
 	rng = RandomNumberGenerator.new()
-	#linear_velocity.z = speed
-	dir = player.translation -translation
-	dir.y = 3.5
+	#dir = player.translation -translation
+	#dir.y = 3.5
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # warning-ignore:unused_argument
@@ -58,12 +58,25 @@ func _process(delta):
 		Engine.time_scale = 1
 		bounces = 0
 		inside = false
+		if serve :
+			gravity = 0
+			if Input.is_action_just_released("ui_accept"):
+				serve = false
+				print("serve")
+				gravity = 6
+				if score:
+					if !score.adCourt :
+						dir = leftHP.global_transform.origin -translation
+						dir.y+= height +2
+					elif score.adCourt :
+						dir = rightHP.global_transform.origin -translation
+						dir.y+= height +2
 #		if linear_velocity.y > 0 :
 #			linear_velocity.y = 0
 #		if linear_velocity.y <= 0 :
 #			linear_velocity.y = height
 		#rng.randomize()
-		if !hitByPlayer: #PLAYERRRRRRRRRR
+		elif !hitByPlayer && !serve : #PLAYERRRRRRRRRR
 			if Input.is_action_pressed("ui_left"):
 				dir = leftHP.global_transform.origin -translation
 				dir.y+= height +2
@@ -88,7 +101,8 @@ func _process(delta):
 			dir.z += randDepth
 			var randHorizontal = rng.randf_range(-4.5,4.5) #-11,11
 			dir.x += randHorizontal
-		else : #AIIIIIIIIIIIIIIIIIIIII
+			print(dir)
+		elif hitByPlayer && !serve : #AIIIIIIIIIIIIIIIIIIIII
 			var randHP = rng.randi_range(0,2) #-11,11
 			match randHP :
 				0:
@@ -108,8 +122,9 @@ func _process(delta):
 			
 			#linear_velocity.x = randDir
 		#dir.y = height
-		hitByPlayer = !hitByPlayer
-		enteredHitZone = false
+		if !serve:
+			hitByPlayer = !hitByPlayer
+			enteredHitZone = false
 		#print(linear_velocity)
 	dir.y -= gravity * delta
 	move_and_slide(dir*speed*delta)
@@ -145,15 +160,25 @@ func _on_Court_body_entered(body):
 		inside = true
 		bounces += 1 # xanei to proto bounce gia kapoio logo
 		print(bounces)
+		body.get_node("Particles").emitting = true
 		#body.linear_velocity.y += 20/bounces
 		dir.y += 4*height / bounces
 		if bounces >= 2:
 			score.pointOver(hitByPlayer)
 			bounces = 0
-		Engine.time_scale = 0.5
-		yield(get_tree().create_timer(0.5), "timeout")
-		Engine.time_scale = 1
-
+		else:
+			if hitByPlayer && translation.z >= 0:
+				score.pointOver(!hitByPlayer)
+				bounces = 0
+			elif !hitByPlayer && translation.z <= 0:
+				hitByPlayer = !hitByPlayer # pffffff skataaaaaaaaaaaa
+				score.pointOver(hitByPlayer)
+				hitByPlayer = !hitByPlayer 
+				bounces = 0
+			Engine.time_scale = 0.5
+			yield(get_tree().create_timer(0.5), "timeout")
+			Engine.time_scale = 1
+		
 
 func _on_Out_body_entered(body):
 	if "Ball" in body.name:
@@ -177,6 +202,10 @@ func _on_Out_body_entered(body):
 func _on_Net_body_entered(body):
 	if "Ball" in body.name:
 		print("net")
+		var randHeight = rng.randf_range(-4,4) #-11,11
+		dir.y += randHeight
+		if translation.y <0.8: # de ksero ama doyleyei alla kalo to blepo gia tora :D
+			dir = Vector3(0,0,0)
 
 
 

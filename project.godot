@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Tennis Journey"
-run/main_scene="res://Tennis Journey.tscn"
+run/main_scene="res://Scenes/Tennis Journey.tscn"
 config/icon="res://icon.png"
 
 [input]
