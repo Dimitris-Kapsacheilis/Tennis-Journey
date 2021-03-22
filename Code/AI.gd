@@ -31,15 +31,20 @@ func _physics_process (delta):
 	 
 
 	if ball.hitByPlayer && !ball.serve :
-		direction.x = ball.translation.x - translation.x
-		direction.z = 0 #(ball.translation.z - translation.z - 18) / 120
+		if ball.dir.x>= 0 &&  (ball.translation.x - translation.x>=-2 || ball.bounces == 1):
+			direction.x = ball.translation.x - translation.x
+		elif ball.dir.x<= 0 &&  (ball.translation.x - translation.x<=2 || ball.bounces == 1):
+			direction.x = ball.translation.x - translation.x
+		direction.z =(ball.translation.z - translation.z - 22) / 15
 	elif !ball.hitByPlayer && !ball.serve :
 		if  translation.x <= 0:
 			direction.x =  -translation.x
 		elif  translation.x > 0:
 			direction.x =  -translation.x
-		if translation.z >= -33:
+		if translation.z >= -35:
 			direction.z = -(ball.translation.z - translation.z - 1) / 15
+		elif translation.z < -35:
+			direction.z = (ball.translation.z - translation.z - 1) / 15
 		else:
 			direction.z = 0
 	move_and_slide(direction*delta*speed, Vector3.UP)

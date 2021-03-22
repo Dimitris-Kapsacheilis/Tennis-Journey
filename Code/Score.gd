@@ -24,8 +24,8 @@ onready var ai
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	playerscoretext = get_node("/root/Tennis Journey/Score/Player")
-	aiscoretext = get_node("/root/Tennis Journey/Score/AI")
+	playerscoretext = get_node("/root/Tennis Journey/Score/Control/Player")
+	aiscoretext = get_node("/root/Tennis Journey/Score/Control/AI")
 	ai = get_node("/root/Tennis Journey/AI")
 	
 
@@ -94,10 +94,10 @@ func pointOver(hitByPlayer):
 		if playerscore == 40 && aiscore == 40 && !avdai && !avdai:
 			deuce = true
 	#bounces = 0
-	playerscoretext.text = "Player : " + str(playersets) + " - " + str(playergames)+ " - "  + str(playerscore)
+	playerscoretext.text = "Player   " + str(playersets) + "  " + str(playergames)+ "   "  + str(playerscore)
 	if avdplayer :
 		playerscoretext.text += " AD"
-	aiscoretext.text = "AI : " + str(aisets) + " - " + str(aigames) + " - " + str(aiscore)
+	aiscoretext.text = "AI         " + str(aisets) + "  " + str(aigames) + "   " + str(aiscore)
 	if avdai :
 		aiscoretext.text += " AD"
 		
@@ -118,6 +118,7 @@ func _on_EndPoint_timeout():
 #	ai.pause_mode =true
 #	ball.pause_mode =true
 	if playerServe:
+		ball.hitByPlayer = false
 		if !adCourt:
 				player.translation = Vector3(2.5,4.1,37)
 				ai.translation = Vector3(-9,4.1,-37)	
@@ -128,6 +129,7 @@ func _on_EndPoint_timeout():
 				ball.translation = Vector3(-2.5,3.8,35)
 		#ball.dir = player.translation - ball.translation
 	if !playerServe:
+		ball.hitByPlayer = true
 		if !adCourt:
 				player.translation = Vector3(9,4.1,37)
 				ai.translation = Vector3(-2.5,4.1,-37)	
@@ -143,7 +145,7 @@ func _on_EndPoint_timeout():
 #	player.pause_mode =false
 #	ai.pause_mode =false
 #	ball.pause_mode =false
-	ball.hitByPlayer = false
+
 	ball.enteredHitZone = false
 	ball.inside = true
 	#ball.linear_velocity.z = 35

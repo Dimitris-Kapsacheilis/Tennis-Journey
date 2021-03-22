@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/BarIndicator.png-5458f2dfb2e14cdf8072b5a692c0a90a.s3tc.stex"
-path.etc2="res://.import/BarIndicator.png-5458f2dfb2e14cdf8072b5a692c0a90a.etc2.stex"
+path.s3tc="res://.import/grasscourt.webp-f9c17919d858f16f93eabc5e91efb965.s3tc.stex"
+path.etc2="res://.import/grasscourt.webp-f9c17919d858f16f93eabc5e91efb965.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Art/UI/BarIndicator.png"
-dest_files=[ "res://.import/BarIndicator.png-5458f2dfb2e14cdf8072b5a692c0a90a.s3tc.stex", "res://.import/BarIndicator.png-5458f2dfb2e14cdf8072b5a692c0a90a.etc2.stex" ]
+source_file="res://Art/Textures/grasscourt.webp"
+dest_files=[ "res://.import/grasscourt.webp-f9c17919d858f16f93eabc5e91efb965.s3tc.stex", "res://.import/grasscourt.webp-f9c17919d858f16f93eabc5e91efb965.etc2.stex" ]
 
 [params]
 

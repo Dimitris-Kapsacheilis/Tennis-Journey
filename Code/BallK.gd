@@ -6,7 +6,7 @@ extends KinematicBody
 # var a = 2
 # var b = "text"
 var gravity = 6
-var speed  # 35
+var speed =33 # 35
 var height  # 5
 var bounces
 var inside #true
@@ -43,7 +43,7 @@ func _ready():
 
 	hitByPlayer = false
 	enteredHitZone = false
-	speed = 30
+	#speed = 30
 	height = 5
 	bounces = 0
 	inside = true
@@ -53,7 +53,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # warning-ignore:unused_argument
-func _process(delta):
+func _physics_process(delta):
 	if enteredHitZone:
 		Engine.time_scale = 1
 		bounces = 0
@@ -62,21 +62,40 @@ func _process(delta):
 			gravity = 0
 			if Input.is_action_just_released("ui_accept"):
 				serve = false
-				print("serve")
+				#print("serve")
 				gravity = 6
-				if score:
-					if !score.adCourt :
-						dir = leftHP.global_transform.origin -translation
-						dir.y+= height +2
-					elif score.adCourt :
-						dir = rightHP.global_transform.origin -translation
-						dir.y+= height +2
+				if score :
+					if !hitByPlayer:
+						if !score.adCourt :
+							dir = leftHP.global_transform.origin -translation
+							dir.y+= height +2
+						elif score.adCourt :
+							dir = rightHP.global_transform.origin -translation
+							dir.y+= height +2
+					elif hitByPlayer:
+						if score.adCourt :
+							dir = myleftHP.global_transform.origin -translation
+							dir.y+= height +2
+						elif !score.adCourt :
+							dir = myrightHP.global_transform.origin -translation
+							dir.y+= height +2
 #		if linear_velocity.y > 0 :
 #			linear_velocity.y = 0
 #		if linear_velocity.y <= 0 :
 #			linear_velocity.y = height
 		#rng.randomize()
 		elif !hitByPlayer && !serve : #PLAYERRRRRRRRRR
+			if (player.translation-translation).x >= 0 :
+				#print("Left")
+				#player.get_node("iziman/AnimationPlayer").stop()
+				player.get_node("iziman/AnimationPlayer").playback_speed=2
+				player.get_node("iziman/AnimationPlayer").play("backhand")
+
+			elif (player.translation-translation).x < 0 :
+				#("Right")
+				#player.get_node("iziman/AnimationPlayer").stop()
+				player.get_node("iziman/AnimationPlayer").playback_speed=2
+				player.get_node("iziman/AnimationPlayer").play("forehand")
 			if Input.is_action_pressed("ui_left"):
 				dir = leftHP.global_transform.origin -translation
 				dir.y+= height +2
@@ -90,8 +109,8 @@ func _process(delta):
 			if Input.is_action_pressed("ui_up"): #deep
 				dir.z += -11
 			if Input.is_action_pressed("ui_down"): #deep
-				dir.y += 2.5
-				dir.z += 25
+				dir.y += 3
+				dir.z += 26
 				if dir.x <= 0 :
 					dir.x += 5 
 				elif dir.x >= 0 :
@@ -101,7 +120,7 @@ func _process(delta):
 			dir.z += randDepth
 			var randHorizontal = rng.randf_range(-4.5,4.5) #-11,11
 			dir.x += randHorizontal
-			print(dir)
+			#print(dir)
 		elif hitByPlayer && !serve : #AIIIIIIIIIIIIIIIIIIIII
 			var randHP = rng.randi_range(0,2) #-11,11
 			match randHP :
@@ -129,21 +148,6 @@ func _process(delta):
 	dir.y -= gravity * delta
 	move_and_slide(dir*speed*delta)
 	
-func _physics_process(delta):
-	
-	if !hitByPlayer:
-		if player != null:
-			pass
-			
-			#direction = player.translation-translation
-	#		if (player.translation-translation).x >= 0 :
-	#			print("Left")
-	#		elif (player.translation-translation).x < 0 :
-	#			print("Right")
-	else : 
-		if ai != null:
-			pass
-
 
 func _on_HitZone_body_entered(body):
 	if "Ball" in body.name:
@@ -159,7 +163,7 @@ func _on_Court_body_entered(body):
 	if  "Ball" in body.name:
 		inside = true
 		bounces += 1 # xanei to proto bounce gia kapoio logo
-		print(bounces)
+		#print(bounces)
 		body.get_node("Particles").emitting = true
 		#body.linear_velocity.y += 20/bounces
 		dir.y += 4*height / bounces
@@ -182,11 +186,12 @@ func _on_Court_body_entered(body):
 
 func _on_Out_body_entered(body):
 	if "Ball" in body.name:
+		body.get_node("Particles").emitting = true
 		if bounces == 0 && !inside:
 			hitByPlayer = !hitByPlayer # pffffff skataaaaaaaaaaaa
 			score.pointOver(hitByPlayer)
 			hitByPlayer = !hitByPlayer
-			print("out")
+			#print("out")
 		elif bounces == 1:
 			score.pointOver(hitByPlayer)
 			bounces = 0
@@ -197,11 +202,14 @@ func _on_Out_body_entered(body):
 #				aiscore += 15
 #				aiscoretext.text = "AI : " + str(aiscore)
 		#bounce = 0 
+	Engine.time_scale = 0.5
+	yield(get_tree().create_timer(0.5), "timeout")
+	Engine.time_scale = 1
 
 
 func _on_Net_body_entered(body):
 	if "Ball" in body.name:
-		print("net")
+		#print("net")
 		var randHeight = rng.randf_range(-4,4) #-11,11
 		dir.y += randHeight
 		if translation.y <0.8: # de ksero ama doyleyei alla kalo to blepo gia tora :D

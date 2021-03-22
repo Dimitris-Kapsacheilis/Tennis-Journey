@@ -1,4 +1,5 @@
 extends Control
+#extends Spatial
 
 
 # Declare member variables here. Examples:
@@ -6,7 +7,7 @@ extends Control
 # var b = "text"
 onready var indicator
 var dir = -1
-var speed = 2
+var speed = 3
 var pressed = false
 var fast 
 var normal 
@@ -30,8 +31,10 @@ func _process(delta):
 	if Input.is_action_pressed("ui_accept"): # && ball.bounces == 1: #activate only when bounced
 		if Input.is_action_just_pressed("ui_accept"):
 			indicator.rect_position.y = 119
-		rect_global_position.x = 10*(player.translation.x +50)  #POLY KAKOOOOOOOOOOOOOOOOOOOOOOO
-		rect_global_position.y = 10*player.translation.z 
+		rect_global_position.x = 10*(player.translation.x +50) 
+		rect_global_position.y = 10*(player.translation.z) 
+		#translation.x = 10*(player.translation.x +50)  #POLY KAKOOOOOOOOOOOOOOOOOOOOOOO
+		#translation.y = 10*player.translation.z 
 		pressed = true
 		visible = true
 	if pressed:

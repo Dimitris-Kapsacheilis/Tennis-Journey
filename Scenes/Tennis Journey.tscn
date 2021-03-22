@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=2]
+[gd_scene load_steps=48 format=2]
 
 [ext_resource path="res://Code/Player.gd" type="Script" id=1]
 [ext_resource path="res://Art/Particles/circle_02.png" type="Texture" id=2]
@@ -10,6 +10,16 @@
 [ext_resource path="res://Art/UI/BarRed.png" type="Texture" id=8]
 [ext_resource path="res://Code/AI.gd" type="Script" id=9]
 [ext_resource path="res://Code/BallK.gd" type="Script" id=10]
+[ext_resource path="res://Art/UI/scorebg.png" type="Texture" id=11]
+[ext_resource path="res://Art/UI/refresh.png" type="Texture" id=12]
+[ext_resource path="res://Art/UI/pause.png" type="Texture" id=13]
+[ext_resource path="res://Art/UI/list.png" type="Texture" id=14]
+[ext_resource path="res://Art/UI/settings.png" type="Texture" id=15]
+[ext_resource path="res://Art/UI/speaker.png" type="Texture" id=16]
+[ext_resource path="res://Code/UI.gd" type="Script" id=17]
+[ext_resource path="res://Art/UI/mute.png" type="Texture" id=18]
+[ext_resource path="res://Art/UI/play-button.png" type="Texture" id=19]
+[ext_resource path="res://Scenes/iziman.tscn" type="PackedScene" id=20]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 1.10803, 2.98461, 1.10273 )
@@ -40,7 +50,7 @@ margin = 0.1
 [sub_resource type="CubeMesh" id=10]
 
 [sub_resource type="SpatialMaterial" id=11]
-albedo_color = Color( 0.141176, 1, 0.454902, 1 )
+albedo_color = Color( 0.254902, 0.937255, 0.156863, 1 )
 
 [sub_resource type="BoxShape" id=12]
 extents = Vector3( 1, 1.4, 1 )
@@ -108,6 +118,7 @@ shape = SubResource( 1 )
 
 [node name="CSGMesh" type="CSGMesh" parent="Player"]
 transform = Transform( 1, 0, 0, 0, -3.16229e-07, -1.941, 0, 1, -1.62921e-07, 0, 0, 0 )
+visible = false
 mesh = SubResource( 2 )
 
 [node name="HitZone" type="Area" parent="Player"]
@@ -115,7 +126,43 @@ mesh = SubResource( 2 )
 [node name="CollisionShape" type="CollisionShape" parent="Player/HitZone"]
 shape = SubResource( 3 )
 
-[node name="Spatial" type="Spatial" parent="Player"]
+[node name="Bar" type="Spatial" parent="Player"]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 1, -1.88623, 0, 1.7921 )
+visible = false
+
+[node name="Indicator" type="Sprite3D" parent="Player/Bar"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0 )
+billboard = 1
+transparent = false
+double_sided = false
+texture = ExtResource( 6 )
+
+[node name="Green" type="Sprite3D" parent="Player/Bar"]
+billboard = 1
+transparent = false
+texture = ExtResource( 7 )
+
+[node name="Yellow" type="Sprite3D" parent="Player/Bar"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0 )
+billboard = 1
+transparent = false
+texture = ExtResource( 5 )
+
+[node name="Red" type="Sprite3D" parent="Player/Bar"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0 )
+billboard = 1
+transparent = false
+texture = ExtResource( 8 )
+
+[node name="Red2" type="Sprite3D" parent="Player/Bar"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0 )
+billboard = 1
+transparent = false
+texture = ExtResource( 8 )
+
+[node name="BarTimer" type="Timer" parent="Player/Bar"]
+wait_time = 0.15
+one_shot = true
 
 [node name="Sprite3D" type="Sprite3D" parent="Player"]
 billboard = 1
@@ -129,6 +176,9 @@ render_target_v_flip = true
 [node name="FirstPersonCamera" type="Camera" parent="Player"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0 )
 far = 150.0
+
+[node name="iziman" parent="Player" instance=ExtResource( 20 )]
+transform = Transform( -0.5, 0, -1.62921e-07, 0, 0.5, 0, 1.62921e-07, 0, -0.5, 0, -2, 0 )
 
 [node name="AI" type="KinematicBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 4.171, -37 )
@@ -375,15 +425,33 @@ local_coords = false
 process_material = SubResource( 21 )
 draw_pass_1 = SubResource( 23 )
 
+[node name="Net" type="StaticBody" parent="."]
+transform = Transform( 20, 0, 0, 0, 2, 0, 0, 0, 1, 0, 1, 0 )
+physics_material_override = SubResource( 24 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CSGMesh" type="CSGMesh" parent="Net"]
+mesh = SubResource( 25 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Net"]
+shape = SubResource( 26 )
+
+[node name="Net" type="Area" parent="Net"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Net/Net"]
+shape = SubResource( 27 )
+
 [node name="Cameras" type="Spatial" parent="."]
 
 [node name="TVCamera" type="Camera" parent="Cameras"]
 transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, -0.523, 30.594, 48 )
-current = true
 far = 150.0
 
 [node name="CourtLevelCamera" type="Camera" parent="Cameras"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.523, 10, 50 )
+current = true
 far = 150.0
 
 [node name="SideCamera" type="Camera" parent="Cameras"]
@@ -395,7 +463,6 @@ transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, -0.2807
 far = 150.0
 
 [node name="PowerBar" type="CanvasLayer" parent="."]
-pause_mode = 2
 follow_viewport_enable = true
 
 [node name="Bar" type="Control" parent="PowerBar"]
@@ -405,6 +472,7 @@ anchor_bottom = 0.233
 margin_right = -26.32
 margin_bottom = -19.8
 grow_vertical = 0
+rect_scale = Vector2( 0.9, 1 )
 script = ExtResource( 4 )
 __meta__ = {
 "_edit_group_": true,
@@ -483,53 +551,253 @@ one_shot = true
 follow_viewport_enable = true
 script = ExtResource( 3 )
 
-[node name="Player" type="Label" parent="Score"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_top = -127.0
-margin_right = 251.0
-margin_bottom = -84.0
-text = "Player : 0"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="AI" type="Label" parent="Score"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_top = -150.387
-margin_right = 248.0
-margin_bottom = -107.387
-text = "AI : 0"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="EndPoint" type="Timer" parent="Score"]
 wait_time = 0.3
 one_shot = true
 
-[node name="Net" type="StaticBody" parent="."]
-transform = Transform( 20, 0, 0, 0, 2, 0, 0, 0, 1, 0, 1, 0 )
-physics_material_override = SubResource( 24 )
+[node name="Control" type="Control" parent="Score"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 36.9684
+margin_top = -157.132
+margin_right = 76.9684
+margin_bottom = -117.132
+rect_scale = Vector2( 2, 2 )
 __meta__ = {
-"_edit_group_": true
+"_edit_use_anchors_": false
 }
 
-[node name="CSGMesh" type="CSGMesh" parent="Net"]
-mesh = SubResource( 25 )
+[node name="Bg" type="TextureRect" parent="Score/Control"]
+margin_left = -14.0
+margin_top = 5.0
+margin_right = 26.0
+margin_bottom = 15.0
+rect_scale = Vector2( 3, 4 )
+texture = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="CollisionShape" type="CollisionShape" parent="Net"]
-shape = SubResource( 26 )
+[node name="Player" type="Label" parent="Score/Control"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = -9.9684
+margin_top = -25.1268
+margin_right = 241.032
+margin_bottom = 17.8732
+text = "Player   0  0   0"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Net" type="Area" parent="Net"]
+[node name="AI" type="Label" parent="Score/Control"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = -9.0
+margin_top = -42.9405
+margin_right = 241.0
+margin_bottom = 0.0594902
+text = "AI         0  0   0"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="CollisionShape" type="CollisionShape" parent="Net/Net"]
-shape = SubResource( 27 )
+[node name="TextureRect" type="TextureRect" parent="Score/Control"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = -14.0
+margin_top = 5.0
+margin_right = -4.0
+margin_bottom = 6.0
+rect_scale = Vector2( 12, 1 )
+texture = ExtResource( 6 )
+
+[node name="TextureRect5" type="TextureRect" parent="Score/Control"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = -14.0
+margin_top = -15.0
+margin_right = -4.0
+margin_bottom = -14.0
+rect_scale = Vector2( 12, 1 )
+texture = ExtResource( 6 )
+
+[node name="TextureRect6" type="TextureRect" parent="Score/Control"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = -14.0
+margin_top = 25.0
+margin_right = -4.0
+margin_bottom = 26.0
+rect_scale = Vector2( 12, 1 )
+texture = ExtResource( 6 )
+
+[node name="TextureRect2" type="TextureRect" parent="Score/Control"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 37.3418
+margin_top = -15.1487
+margin_right = 47.3418
+margin_bottom = -14.1487
+rect_rotation = 90.0
+rect_scale = Vector2( 4, 1 )
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect7" type="TextureRect" parent="Score/Control"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = -14.0
+margin_top = -15.0
+margin_right = -4.0
+margin_bottom = -14.0
+rect_rotation = 90.0
+rect_scale = Vector2( 4, 1 )
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect8" type="TextureRect" parent="Score/Control"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 106.0
+margin_top = -15.0
+margin_right = 116.0
+margin_bottom = -14.0
+rect_rotation = 90.0
+rect_scale = Vector2( 4, 1 )
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect3" type="TextureRect" parent="Score/Control"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 52.7758
+margin_top = -15.0
+margin_right = 62.7758
+margin_bottom = -14.0
+rect_rotation = 90.0
+rect_scale = Vector2( 4, 1 )
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect4" type="TextureRect" parent="Score/Control"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 69.7847
+margin_top = -15.0
+margin_right = 79.7847
+margin_bottom = -14.0
+rect_rotation = 90.0
+rect_scale = Vector2( 4, 1 )
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource( 17 )
+
+[node name="Restart" type="TextureButton" parent="UI"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -129.852
+margin_top = 7.49154
+margin_right = 382.148
+margin_bottom = 519.492
+rect_scale = Vector2( 0.1, 0.1 )
+focus_mode = 0
+enabled_focus_mode = 0
+texture_normal = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Menu" type="TextureButton" parent="UI"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -195.778
+margin_top = 7.49154
+margin_right = 316.222
+margin_bottom = 519.492
+rect_scale = Vector2( 0.1, 0.1 )
+focus_mode = 0
+enabled_focus_mode = 0
+texture_normal = ExtResource( 14 )
+
+[node name="Settings" type="TextureButton" parent="UI"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -261.703
+margin_top = 7.49154
+margin_right = 250.297
+margin_bottom = 519.492
+rect_scale = Vector2( 0.1, 0.1 )
+focus_mode = 0
+enabled_focus_mode = 0
+texture_normal = ExtResource( 15 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sound" type="TextureButton" parent="UI"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -320.137
+margin_top = 7.49154
+margin_right = 191.863
+margin_bottom = 519.492
+rect_scale = Vector2( 0.1, 0.1 )
+focus_mode = 0
+toggle_mode = true
+enabled_focus_mode = 0
+texture_normal = ExtResource( 16 )
+texture_pressed = ExtResource( 18 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="UI"]
+pause_mode = 2
+visible = false
+show_behind_parent = true
+anchor_left = -3.832
+anchor_bottom = 3.368
+margin_left = 3912.89
+margin_top = -30.5085
+margin_right = 12429.9
+margin_bottom = 4740.08
+color = Color( 0, 0, 0, 0.662745 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Pause" type="TextureButton" parent="UI"]
+pause_mode = 2
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -63.1776
+margin_top = 7.49154
+margin_right = 448.822
+margin_bottom = 519.492
+rect_scale = Vector2( 0.1, 0.1 )
+focus_mode = 0
+toggle_mode = true
+enabled_focus_mode = 0
+texture_normal = ExtResource( 13 )
+texture_pressed = ExtResource( 19 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="body_entered" from="Player/HitZone" to="BallK" method="_on_HitZone_body_entered"]
 [connection signal="body_exited" from="Player/HitZone" to="BallK" method="_on_HitZone_body_exited"]
 [connection signal="body_entered" from="AI/HitZone" to="BallK" method="_on_HitZone_body_entered"]
@@ -538,6 +806,11 @@ shape = SubResource( 27 )
 [connection signal="body_entered" from="OutCourt/Out" to="BallK" method="_on_Out_body_entered"]
 [connection signal="body_entered" from="OutCourt2/Out" to="BallK" method="_on_Out_body_entered"]
 [connection signal="body_entered" from="OutCourt3/Out" to="BallK" method="_on_Out_body_entered"]
+[connection signal="body_entered" from="Net/Net" to="BallK" method="_on_Net_body_entered"]
 [connection signal="timeout" from="PowerBar/Bar/BarTimer" to="PowerBar/Bar" method="_on_BarTimer_timeout"]
 [connection signal="timeout" from="Score/EndPoint" to="Score" method="_on_EndPoint_timeout"]
-[connection signal="body_entered" from="Net/Net" to="BallK" method="_on_Net_body_entered"]
+[connection signal="pressed" from="UI/Restart" to="UI" method="_on_Restart_pressed"]
+[connection signal="pressed" from="UI/Menu" to="UI" method="_on_Menu_pressed"]
+[connection signal="pressed" from="UI/Settings" to="UI" method="_on_Settings_pressed"]
+[connection signal="pressed" from="UI/Sound" to="UI" method="_on_Sound_pressed"]
+[connection signal="pressed" from="UI/Pause" to="UI" method="_on_Pause_pressed"]

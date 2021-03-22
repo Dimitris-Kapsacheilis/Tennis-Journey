@@ -21,17 +21,32 @@ func _ready():
 
 func _physics_process (delta):
 	if !ball.hitByPlayer && !ball.serve: 
-		direction.x = ball.translation.x - translation.x
-		direction.z = 0 #(ball.translation.z - translation.z + 18) / 12
+		if ball.dir.x>= 0 &&  (ball.translation.x - translation.x>=-2 || ball.bounces == 1):
+			direction.x = ball.translation.x - translation.x
+		elif ball.dir.x<= 0 && (ball.translation.x - translation.x<=2 || ball.bounces == 1):
+			direction.x = ball.translation.x - translation.x
+		direction.z =(ball.translation.z - translation.z + 25) / 15
 	elif ball.hitByPlayer && !ball.serve: # perimeno to ai
 		if  translation.x <= 0:
 			direction.x =  -translation.x
 		elif  translation.x > 0:
 			direction.x =  -translation.x
-		if translation.z <= 35:
+		if translation.z < 35:
 			direction.z = -(ball.translation.z - translation.z - 1) / 15
+		elif translation.z > 36:
+			direction.z = (ball.translation.z - translation.z - 1) / 15
 		else :
 			direction.z  = 0 
+			
+	if get_node("iziman/AnimationPlayer").current_animation != "forehand" &&  get_node("iziman/AnimationPlayer").current_animation != "backhand":
+		#print(direction)
+		var error = 1.3
+		#if (direction.x <= error && direction.x >= -error) && (direction.z <= error &&direction.z>= -error)||(translation.x == 0 && translation.z == 35):
+		if direction == Vector3.ZERO || (abs(direction.x) <= error && abs(direction.z)<=error):
+			get_node("iziman/AnimationPlayer").play("idle")
+		else:
+				get_node("iziman/AnimationPlayer").play("run")
+
 	move_and_slide(direction*delta*speed, Vector3.UP)
 #	vel.x = 0
 #	vel.z = 0
@@ -61,5 +76,4 @@ func _physics_process (delta):
 #		vel.y = jumpForce
 
 		
-		
-		
+	
